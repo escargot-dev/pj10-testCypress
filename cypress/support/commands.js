@@ -23,3 +23,25 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('getBySel', (selector, ...args)=>{
+  return cy.get(`[data-cy="${selector}"]`, ...args);
+});
+
+Cypress.Commands.add('login', (username, password) => {
+  cy.visit('http://localhost:8080/#/');
+
+  cy.getBySel('nav-link-login').click();
+
+  // attendre que les champs soient activés
+  cy.getBySel('login-input-username').should('not.be.disabled');
+  cy.getBySel('login-input-password').should('not.be.disabled');
+
+  // remplir les champs
+  cy.getBySel('login-input-username').clear().type(username);
+  cy.getBySel('login-input-password').clear().type(password);
+
+  cy.getBySel('login-submit').click();
+
+  cy.url().should('include', '/#/');
+});
