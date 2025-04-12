@@ -10,7 +10,7 @@ describe('Smoke Tests', () =>{
   beforeEach(()=>{
     cy.login('test2@test.fr', 'testtest');
   });
-  it('Boutons d’ajout au panier présents une fois connecté', () => {
+  it('les Boutons "Ajouter au panier" sont visibles une fois connecté', () => {
     cy.getBySel('nav-link-cart').should('exist');
   });
  

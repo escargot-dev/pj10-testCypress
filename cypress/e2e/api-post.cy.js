@@ -21,13 +21,13 @@ beforeEach(() => {
 it('should add a product to the cart', () => {
   cy.get('@authToken').then((token) => {
     cy.request({
-      method: 'PUT',
+      method: 'post',
       url: apiAddToCart,
       headers: {
         Authorization: `Bearer ${token}`,
       },
       body: {
-        productId: 2,
+        productId: 3,
         quantity: 1,
       },
     }).then((res) => {
@@ -44,9 +44,9 @@ it('should add a product review', () => {
       Authorization: `Bearer ${token}`
     },
     body: {
-      productId: 1,
-      rating: 4,
-      comment: 'Top produit !'
+      "title": "string",
+      "comment": "string",
+      "rating": 5
     }
   }).then((res) => {
     expect([200, 201]).to.include(res.status);
