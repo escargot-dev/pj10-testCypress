@@ -29,9 +29,10 @@ Cypress.Commands.add('getBySel', (selector, ...args)=>{
 });
 
 Cypress.Commands.add('login', (username, password) => {
-  cy.visit('http://localhost:8080/#/');
+  cy.visit('http://localhost:8080/#/login');
 
-  cy.getBySel('nav-link-login').click();
+  cy.getBySel('nav-link-login').should('be.visible').click();
+  cy.getBySel('login-form').should('exist');
 
   // attendre que les champs soient activés
   cy.getBySel('login-input-username').should('not.be.disabled');
@@ -41,7 +42,7 @@ Cypress.Commands.add('login', (username, password) => {
   cy.getBySel('login-input-username').clear().type(username);
   cy.getBySel('login-input-password').clear().type(password);
 
-  cy.getBySel('login-submit').click();
+  cy.getBySel('login-submit').should('be.visible').click();
 
   cy.url().should('include', '/#/');
 });

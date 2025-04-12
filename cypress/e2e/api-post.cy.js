@@ -11,26 +11,28 @@ describe('API - Tests POST avec login automatique à chaque test', () =>{
 
 let token='';
 
-before(() => {
+beforeEach(() => {
   cy.request('POST', apiLogin, credentials).then((res) => {
     expect(res.status).to.eq(200);
-    token = res.body.token;
+    cy.wrap(res.body.token).as('authToken'); // 👈 stocké sous alias
   });
 });
 
 it('should add a product to the cart', () => {
-  cy.request({
-    method: 'PUT',
-    url: apiAddToCart,
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    body: {
-      productId: 2,
-      quantity: 1
-    }
-  }).then((res) => {
-    expect([200, 201]).to.include(res.status);
+  cy.get('@authToken').then((token) => {
+    cy.request({
+      method: 'PUT',
+      url: apiAddToCart,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: {
+        productId: 2,
+        quantity: 1,
+      },
+    }).then((res) => {
+      expect([200, 201]).to.include(res.status);
+    });
   });
 });
 
