@@ -72,6 +72,14 @@ export class CartComponent implements OnInit {
       if(response.status === 401) {
         localStorage.removeItem('user');
         this.router.navigate(['/login']);
+      } else if (response.status === 404) {
+        // Cas où aucun panier n’existe
+        console.warn('Aucun panier en cours pour cet utilisateur.');
+        this.order = null;
+        this.forms = [];
+        this.total = 0;
+      } else {
+        console.error('Votre panier est vide. Consultez nos produits.', response);
       }
     });
   }
